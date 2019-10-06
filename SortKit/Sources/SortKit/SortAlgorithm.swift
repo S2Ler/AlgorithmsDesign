@@ -1,8 +1,12 @@
 import Foundation
 
 public protocol SortAlgorithm {
-  associatedtype Element: Comparable
-  func sort(_ input: [Element],
-            progress: @escaping ([Element]) -> Void,
-            sorted: @escaping ([Element]) -> Void)
+  init()
+
+  var name: String { get }
+
+  func sort<Element: Comparable>(_ input: [Element],
+                                 progress: @escaping ([Element]) -> Void,
+                                 sorted: @escaping ([Element]) -> Void)
+
 }

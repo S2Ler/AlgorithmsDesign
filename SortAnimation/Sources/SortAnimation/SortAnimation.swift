@@ -2,12 +2,11 @@ import SwiftUI
 import SortKit
 import Combine
 
-public typealias SortableElement = Hashable & CustomStringConvertible & Identifiable
+public typealias SortableElement = Hashable & Comparable & CustomStringConvertible & Identifiable
 
-public final class SortAnimation<Element: SortableElement, Algorithm: SortAlgorithm>: ObservableObject
-  where Algorithm.Element == Element
+public final class SortAnimation<Element: SortableElement>: ObservableObject
 {
-  private let sortAlgorithm: Algorithm
+  private let sortAlgorithm: SortAlgorithm
   private var timer: Timer!
 
   public var values: [Element] {
@@ -20,7 +19,7 @@ public final class SortAnimation<Element: SortableElement, Algorithm: SortAlgori
 
   public var objectWillChange = PassthroughSubject<Void, Never>()
 
-  public init(_ initialValues: [Element], sortAlgorithm: Algorithm) {
+  public init(_ initialValues: [Element], sortAlgorithm: SortAlgorithm) {
     self.values = initialValues
     self.sortAlgorithm = sortAlgorithm
 
@@ -44,29 +43,5 @@ public final class SortAnimation<Element: SortableElement, Algorithm: SortAlgori
   private func timerLoop() {
     guard !valuesHistory.isEmpty else { return }
     values = valuesHistory.removeFirst()
-  }
-}
-
-public struct SortAnimationView<Element: SortableElement, Algorithm: SortAlgorithm>: View
-  where Algorithm.Element == Element
-{
-  @ObservedObject var sortAnimation: SortAnimation<Element, Algorithm>
-
-  public init(_ sortAnimation: SortAnimation<Element, Algorithm>) {
-    self.sortAnimation = sortAnimation
-  }
-
-  public var body: some View {
-    VStack {
-      HStack {
-        ForEach(sortAnimation.values) { i in
-          Text("\(i.description)")
-        }
-      }.animation(.linear)
-
-      Button(action: { self.sortAnimation.sort() }) {
-        Text("Sort")
-      }
-    }
   }
 }
