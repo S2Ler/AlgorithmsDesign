@@ -23,4 +23,5 @@ public struct SortAlgorithmViewModel: Hashable, Identifiable {
 public let sortAlgorithmViewModels: [SortAlgorithmViewModel] = [
   .init(SystemSort()),
   .init(InsertionSort()),
+  .init(SelectionSort()),
 ]

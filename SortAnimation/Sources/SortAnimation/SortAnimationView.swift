@@ -13,12 +13,15 @@ public struct SortAnimationView<Element: SortableElement>: View
       HStack {
         ForEach(sortAnimation.values) { i in
           Text("\(i.description)")
-        }.animation(.linear)
+        }
+        Spacer()
       }
+      .animation(.linear)
 
       Button(action: { self.sortAnimation.sort() }) {
         Text("Sort")
       }
+      Spacer()
     }
   }
 }
